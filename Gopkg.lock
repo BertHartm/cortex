@@ -606,7 +606,11 @@
 [[projects]]
   branch = "master"
   name = "github.com/prometheus/client_golang"
-  packages = ["prometheus"]
+  packages = [
+    "api",
+    "api/prometheus/v1",
+    "prometheus"
+  ]
   revision = "137706c1993ea776190b4eab6f5b41c7ae25394b"
 
 [[projects]]
@@ -1122,6 +1126,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "dfbcc50df522b353f27b1af1328cc6389e305dd0bdf23e8ea4200d7e9bca9d2b"
+  inputs-digest = "a9c9531e07ac03f09e6b79d96e1f10971a8a75d04886ed34855241e25f2bf9b0"
   solver-name = "gps-cdcl"
   solver-version = 1
