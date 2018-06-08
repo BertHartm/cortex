@@ -75,21 +75,21 @@ func TestTableManagerMetricsAutoScaling(t *testing.T) {
 	test(t, client, tableManager, "Large queues small errors",
 		startTime.Add(time.Minute*40),
 		append(baseTable("a", inactiveRead, inactiveWrite),
-			staticTable(0, read, 288, read, write)...), // - scale up index table
+			staticTable(0, read, 250, read, write)...), // - scale up index table
 	)
 
 	mockProm.SetResponse(0, 0, 0, 0, 0)
 	test(t, client, tableManager, "No queues no errors",
 		startTime.Add(time.Minute*100),
 		append(baseTable("a", inactiveRead, inactiveWrite),
-			staticTable(0, read, 259, read, 180)...), // - scale down both tables
+			staticTable(0, read, 225, read, 180)...), // - scale down both tables
 	)
 
 	mockProm.SetResponse(0, 0, 0, 0, 0)
 	test(t, client, tableManager, "No queues no errors",
 		startTime.Add(time.Minute*200),
 		append(baseTable("a", inactiveRead, inactiveWrite),
-			staticTable(0, read, 233, read, 162)...), // - scale down both again
+			staticTable(0, read, 202, read, 162)...), // - scale down both again
 	)
 
 	mockProm.SetResponse(0, 0, 0, 30, 30, 30, 30)
@@ -97,7 +97,7 @@ func TestTableManagerMetricsAutoScaling(t *testing.T) {
 		startTime.Add(tablePeriod),
 		// Nothing much happening - expect table 0 write rates to stay as-is and table 1 to be created with defaults
 		append(append(baseTable("a", inactiveRead, inactiveWrite),
-			staticTable(0, inactiveRead, 233, inactiveRead, 162)...),
+			staticTable(0, inactiveRead, 202, inactiveRead, 162)...),
 			staticTable(1, read, write, read, write)...),
 	)
 
@@ -106,7 +106,7 @@ func TestTableManagerMetricsAutoScaling(t *testing.T) {
 	test(t, client, tableManager, "Next week plus a bit",
 		startTime.Add(tablePeriod).Add(time.Minute*10),
 		append(append(baseTable("a", inactiveRead, inactiveWrite),
-			staticTable(0, inactiveRead, 209, inactiveRead, 162)...), // Scale back last week's index table
+			staticTable(0, inactiveRead, 181, inactiveRead, 162)...), // Scale back last week's index table
 			staticTable(1, read, write, read, write)...),
 	)
 
@@ -115,7 +115,7 @@ func TestTableManagerMetricsAutoScaling(t *testing.T) {
 	test(t, client, tableManager, "Next week plus a bit",
 		startTime.Add(tablePeriod).Add(time.Minute*20),
 		append(append(baseTable("a", inactiveRead, inactiveWrite),
-			staticTable(0, inactiveRead, 209, inactiveRead, 162)...), // no scaling back
+			staticTable(0, inactiveRead, 181, inactiveRead, 162)...), // no scaling back
 			staticTable(1, read, write, read, write)...),
 	)
 
@@ -123,7 +123,7 @@ func TestTableManagerMetricsAutoScaling(t *testing.T) {
 	test(t, client, tableManager, "next week, queues building, errors on index table",
 		startTime.Add(tablePeriod).Add(time.Minute*30),
 		append(append(baseTable("a", inactiveRead, inactiveWrite),
-			staticTable(0, inactiveRead, 209, inactiveRead, 162)...), // no scaling back
+			staticTable(0, inactiveRead, 181, inactiveRead, 162)...), // no scaling back
 			staticTable(1, read, 240, read, write)...), // scale up index table
 	)
 }
