@@ -22,7 +22,7 @@ const (
 	queueLengthScaledown   = 10000   // consider scaling down if queue smaller than this
 	queueLengthAcceptable  = 100000  // we don't mind queues smaller than this
 	queueLengthMax         = 1000000 // always scale up if queue bigger than this
-	errorRateScaledown     = 1
+	errorFractionScaledown = 0.1
 	scaledown              = 0.9
 	scaleup                = 1.2
 )
@@ -45,7 +45,7 @@ func (d dynamoTableClient) metricsAutoScale(ctx context.Context, current, expect
 	level.Info(util.Logger).Log("msg", "checking metrics", "table", current.Name, "queueLengths", fmt.Sprint(m.queueLengths), "errorRate", errorRate)
 
 	switch {
-	case m.queueLengths[2] < queueLengthScaledown && errorRate < errorRateScaledown:
+	case m.queueLengths[2] < queueLengthScaledown && errorRate < errorFractionScaledown*float64(current.ProvisionedWrite):
 		// No big queue, low errors -> scale down
 		expected.ProvisionedWrite = int64(float64(current.ProvisionedWrite) * scaledown)
 		level.Info(util.Logger).Log("msg", "metrics scale-down", "table", current.Name, "write", expected.ProvisionedWrite)

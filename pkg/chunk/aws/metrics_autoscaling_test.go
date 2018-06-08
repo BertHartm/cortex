@@ -92,7 +92,7 @@ func TestTableManagerMetricsAutoScaling(t *testing.T) {
 			staticTable(0, read, 233, read, 162)...), // - scale down both again
 	)
 
-	mockProm.SetResponse(0, 0, 0, 1, 1, 1, 1)
+	mockProm.SetResponse(0, 0, 0, 30, 30, 30, 30)
 	test(t, client, tableManager, "Next week",
 		startTime.Add(tablePeriod),
 		// Nothing much happening - expect table 0 write rates to stay as-is and table 1 to be created with defaults
@@ -102,7 +102,7 @@ func TestTableManagerMetricsAutoScaling(t *testing.T) {
 	)
 
 	// No errors on last week's index table, still some on chunk table
-	mockProm.SetResponse(0, 0, 0, 0, 1, 1, 1)
+	mockProm.SetResponse(0, 0, 0, 0, 30, 30, 30)
 	test(t, client, tableManager, "Next week plus a bit",
 		startTime.Add(tablePeriod).Add(time.Minute*10),
 		append(append(baseTable("a", inactiveRead, inactiveWrite),
