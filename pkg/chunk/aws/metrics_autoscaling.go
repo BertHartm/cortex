@@ -138,9 +138,7 @@ func (m *metricsData) update(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	if m.errorRates == nil {
-		m.errorRates = make(map[string]float64)
-	}
+	m.errorRates = make(map[string]float64)
 	for _, s := range deMatrix {
 		table, found := s.Metric["table"]
 		if !found {
