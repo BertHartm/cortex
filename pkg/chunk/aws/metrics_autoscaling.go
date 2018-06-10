@@ -22,7 +22,6 @@ const (
 	targetScaledown        = 0.1 // consider scaling down if queue smaller than this times target
 	targetMax              = 10  // always scale up if queue bigger than this times target
 	errorFractionScaledown = 0.1
-	scaledown              = 0.9
 	scaleup                = 1.2
 )
 
