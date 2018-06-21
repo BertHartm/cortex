@@ -181,7 +181,7 @@ func (m *metricsData) update(ctx context.Context) error {
 }
 
 func extractRates(matrix model.Matrix) (map[string]float64, error) {
-	ret := make(map[string]float64)
+	ret := map[string]float64{}
 	for _, s := range matrix {
 		table, found := s.Metric["table"]
 		if !found {
